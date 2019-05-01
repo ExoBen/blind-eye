@@ -6,15 +6,15 @@ import processing.core.PApplet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TextOverlay extends VideoMaskDegree {
+class TextOverlay extends VideoMaskDegree {
 
-  private PApplet parent; // The parent PApplet that we will render ourselves onto
+  private PApplet parent;
 
   TextOverlay(PApplet p) {
     parent = p;
   }
 
-  void textOverlay(int currentTime, KinectPV2 kinect) {
+  void textOverlay(long currentTime, KinectPV2 kinect) {
     parent.fill(255);
     parent.text("Time: " + intoSeconds(currentTime) + "s", 50, 170);
     parent.text("FPS: " + floor(parent.frameRate), 50, 220);
@@ -32,7 +32,7 @@ public class TextOverlay extends VideoMaskDegree {
     }
   }
 
-  private int intoSeconds(int millis) {
+  private int intoSeconds(long millis) {
     return floor(millis/1000);
   }
 
