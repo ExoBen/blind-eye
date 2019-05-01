@@ -27,7 +27,7 @@ public class VideoMaskDegree extends PApplet {
   }
 
   public void settings() {
-    size(1302, 1080);
+    fullScreen();
   }
 
   public void setup() {

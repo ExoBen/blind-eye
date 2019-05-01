@@ -20,7 +20,7 @@ class TextOverlay extends VideoMaskDegree {
     parent.text("FPS: " + floor(parent.frameRate), 50, 220);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy\nHH:mm:ss");
     String dateTime = sdf.format(new Date());
-    parent.text(dateTime, 1050, 950);
+    parent.text(dateTime, 1000, 700);
 
     parent.text(kinect.getBodyTrackUser().size(), 50, 120);
     parent.text("REC", 50, 70);
