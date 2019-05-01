@@ -5,30 +5,24 @@ import processing.sound.*;
 import KinectPV2.*;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class VideoMaskDegree extends PApplet {
+
+  private KinectPV2 kinect;
+  TextOverlay textOverlay;
+  private int black = -16777216;
+  private PImage staticBackground;
+  private int timeBegin;
+  private int currentTime;
+  private PImage[] savedFrame = new PImage[40];
+  private int glitchCounter = 0;
+  private boolean showThePast = false;
+  private PImage outputVideo;
+  private SoundFile clickBuzz;
 
   public static void main(String[] args) {
     PApplet.main("org.toby.kinectvideomask.VideoMaskDegree");
   }
-
-  //Capture video;
-  KinectPV2 kinect;
-
-  int black = -16777216;
-  PImage staticBackground;
-  PFont vcr;
-  int timeBegin;
-  int currentTime;
-  PImage[] savedFrame = new PImage[40];
-  int glitchCounter = 0;
-  boolean showThePast = false;
-  PImage outputVideo;
-  SoundFile softFuzz;
-  SoundFile clickBuzz;
-
 
   public void settings() {
     size(1302, 1080);
@@ -43,10 +37,12 @@ public class VideoMaskDegree extends PApplet {
     kinect.enableBodyTrackImg(true);
     kinect.init();
 
-    vcr = createFont("F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vcr.ttf", 48);
+    textOverlay = new TextOverlay(this);
+
+    PFont vcr = createFont("F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vcr.ttf", 48);
     textFont(vcr);
     timeBegin = millis();
-    softFuzz = new SoundFile(this, "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav");
+    SoundFile softFuzz = new SoundFile(this, "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav");
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
     clickBuzz = new SoundFile(this, "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/clickBuzz.wav");
@@ -83,7 +79,7 @@ public class VideoMaskDegree extends PApplet {
     }
     image(outputVideo, 0, 0);
 
-    textOverlay();
+    textOverlay.textOverlay(currentTime, kinect);
   }
 
   // ---------------------------------------------------------------------
@@ -187,39 +183,16 @@ public class VideoMaskDegree extends PApplet {
 
   private PImage showThePast(PImage liveVideo) {
     showThePast = true;
-    PImage temp = liveVideo;
     if (savedFrame[glitchCounter] != null) {
       outputVideo = savedFrame[glitchCounter];
     }
-    savedFrame[glitchCounter] = temp;
+    savedFrame[glitchCounter] = liveVideo;
     glitchCounter++;
     if (glitchCounter >= 40) {
       glitchCounter = 0;
       showThePast = false;
     }
     return outputVideo;
-  }
-
-  private void textOverlay() {
-    fill(255);
-    text("Time: " + intoSeconds(currentTime) + "s", 50, 170);
-    text("FPS: " + floor(frameRate), 50, 220);
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy\nHH:mm:ss");
-    String dateTime = sdf.format(new Date());
-    text(dateTime, 1050, 950);
-
-    text(kinect.getBodyTrackUser().size(), 50, 120);
-    text("REC", 50, 70);
-    if (floor(currentTime/1000) % 2 == 0) {
-      fill(255, 0, 0);
-      stroke(255, 0, 0);
-      rect(150, 39, 16, 24);
-      rect(146, 43, 24, 16);
-    }
-  }
-
-  private int intoSeconds(int millis) {
-    return floor(millis/1000);
   }
 
   public void mousePressed() {
