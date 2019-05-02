@@ -27,7 +27,8 @@ public class VideoMaskDegree extends PApplet {
   }
 
   public void settings() {
-    fullScreen();
+    size(1302, 1080);
+    //fullScreen();
   }
 
   public void setup() {
@@ -62,7 +63,7 @@ public class VideoMaskDegree extends PApplet {
     if (rand.nextInt(200) == 0 || currentlyGlitching) {
       outputVideo = glitch.executeGlitch(liveVideo, bodyUpscaled);
       currentlyGlitching = glitch.isCurrentlyGlitching();
-    } else if (currentTime % 10000 > 8000) {
+    } else if (currentTime % 20000 > 19000) {
       if (!clickBuzz.isPlaying()) {
         clickBuzz.play();
       }
