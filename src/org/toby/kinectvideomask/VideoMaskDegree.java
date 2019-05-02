@@ -1,5 +1,7 @@
 package org.toby.kinectvideomask;
 
+import org.toby.kinectvideomask.base.BaseLoader;
+import org.toby.kinectvideomask.features.FeatureLoader;
 import org.toby.kinectvideomask.glitches.GlitchLoader;
 import processing.core.*;
 import processing.sound.*;
@@ -9,26 +11,34 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static org.toby.kinectvideomask.Utilities.BLACK;
+import static org.toby.kinectvideomask.Utilities.LEFT_OFFSET;
 
 public class VideoMaskDegree extends PApplet {
 
+  public static final int KINECT_WIDTH = 434;
+  public static final int KINECT_HEIGHT = 360;
+
+  private BaseLoader base;
+  private FeatureLoader feature;
+  private boolean currentlyFeaturing = false;
   private GlitchLoader glitch;
+  private boolean currentlyGlitching = false;
+
   private TextOverlay textOverlay;
-  private Ghosting ghost;
   private KinectPV2 kinect;
   private long timeBegin;
-  private boolean currentlyGlitching = false;
+  private long timeOfLastFeature;
   private SoundFile clickBuzz;
   private PImage staticBackground;
   private Random rand;
+  private PImage outputVideo;
 
   public static void main(String[] args) {
     PApplet.main("org.toby.kinectvideomask.VideoMaskDegree");
   }
 
   public void settings() {
-    size(1302, 1080);
-    //fullScreen();
+    fullScreen();
   }
 
   public void setup() {
@@ -38,10 +48,12 @@ public class VideoMaskDegree extends PApplet {
     staticBackground = loadImage(background);
     staticBackground.resize(1302, 1080);
     rand = new Random();
+    base = new BaseLoader();
+    feature = new FeatureLoader();
     glitch = new GlitchLoader();
-    ghost = new Ghosting();
     textOverlay = new TextOverlay(this);
     timeBegin = System.currentTimeMillis();
+    timeOfLastFeature = timeBegin;
     setUpKinect(this);
     setUpSounds();
     textFont(createFont(vhsFont, 48));
@@ -50,33 +62,38 @@ public class VideoMaskDegree extends PApplet {
   @SuppressWarnings("unchecked")
   public void draw() {
     background(0);
-    PImage outputVideo;
     long currentTime = System.currentTimeMillis() - timeBegin;
-    PImage cropBody = kinect.getBodyTrackImage().get(39, 32, 434, 360);
-    int cropBodySize = (cropBody.width * cropBody.height);
-
-    PImage bodyUpscaled = Upscaler.upscaler(cropBody, cropBodySize);
+    PImage cropBody = kinect.getBodyTrackImage().get(39, 32, KINECT_WIDTH, KINECT_HEIGHT);
+    PImage body = Upscaler.upscaler(cropBody, KINECT_WIDTH*KINECT_HEIGHT);
     PImage liveVideo = kinect.getColorImage().get(309, 0, 1302, 1080);
-    ArrayList<PImage> bodyTrackList = kinect.getBodyTrackUser();
+    ArrayList<PImage> bodyList = kinect.getBodyTrackUser();
 
+    int random = rand.nextInt(200);
+    long timeSince = System.currentTimeMillis() - timeOfLastFeature;
+    boolean toFeature = (timeSince > 4000 && rand.nextInt(100) == 0) || timeSince > 6000;
 
-    if (rand.nextInt(200) == 0 || currentlyGlitching) {
-      outputVideo = glitch.executeGlitch(liveVideo, bodyUpscaled);
-      currentlyGlitching = glitch.isCurrentlyGlitching();
-    } else if (currentTime % 20000 > 19000) {
-      if (!clickBuzz.isPlaying()) {
-        clickBuzz.play();
+    if (toFeature || currentlyFeaturing || random == 0 || currentlyGlitching) {
+      if (toFeature || currentlyFeaturing) {
+        //featuring
+        outputVideo = feature.executeFeature(liveVideo, body, staticBackground);
+        currentlyFeaturing = feature.isCurrentlyFeaturing();
+        if (!clickBuzz.isPlaying()) {
+          clickBuzz.play();
+        }
+        timeOfLastFeature = System.currentTimeMillis();
+      } else {
+        outputVideo = liveVideo;
       }
-      outputVideo = Utilities.twoTone(bodyUpscaled, color(255, 1, 145), color(0, 151, 254));
-      //outputVideo = bitmapFuzz(bodyUpscaled, liveVideo);
-    } else if (bodyTrackList.size() > 2) {
-      PImage upscaledSecondPerson = Upscaler.upscaler(bodyTrackList.get(1), cropBodySize);
-      outputVideo = ghost.ghosting(upscaledSecondPerson, liveVideo, staticBackground);
+      if (random == 0 || currentlyGlitching) {
+        //glitching
+        outputVideo = glitch.executeGlitch(outputVideo, body, bodyList);
+        currentlyGlitching = glitch.isCurrentlyGlitching();
+      }
     } else {
-      outputVideo = ghost.ghosting(bodyUpscaled, liveVideo, staticBackground);
+      //basing
+      outputVideo = base.executeBase(liveVideo, body, staticBackground, bodyList);
     }
-    image(outputVideo, 0, 0);
-
+    image(outputVideo, LEFT_OFFSET, 0);
     textOverlay.textOverlay(currentTime, kinect);
   }
 
@@ -99,26 +116,13 @@ public class VideoMaskDegree extends PApplet {
     kinect.init();
   }
 
-
-  PImage bitmapFuzz(PImage bodyUpscaled, PImage liveVideo) {
-    liveVideo.loadPixels();
-    int bodyUpscaledSize = (bodyUpscaled.width * bodyUpscaled.height);
-
-    for (int i = 0; i < bodyUpscaledSize; i++) {
-      int magicNumber2 = (int) random(0, 4);
-      if (bodyUpscaled.pixels[i] == BLACK && magicNumber2 == 1) {
-        int magicNumber = (int) random(0, 2);
-        liveVideo.pixels[i] = (magicNumber == 1 ? color(0) : color(255));
-      }
-    }
-    liveVideo.updatePixels();
-    return liveVideo;
-  }
-
   public void mousePressed() {
-    saveFrame("resources/bg.png");
-    String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
-    staticBackground = loadImage(background);
-    staticBackground.resize(1302, 1080);
+    if (mouseButton == LEFT) {
+      outputVideo.save("resources/bg.png");
+      String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
+      staticBackground = loadImage(background);
+    } else if (mouseButton == RIGHT) {
+      exit();
+    }
   }
 }

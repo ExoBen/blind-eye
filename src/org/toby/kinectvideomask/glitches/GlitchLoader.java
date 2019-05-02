@@ -2,6 +2,7 @@ package org.toby.kinectvideomask.glitches;
 
 import processing.core.PImage;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GlitchLoader {
@@ -19,7 +20,7 @@ public class GlitchLoader {
     showThePast = new ShowThePast();
   }
 
-  public PImage executeGlitch (PImage liveVideo, PImage body) {
+  public PImage executeGlitch (PImage liveVideo, PImage body, ArrayList<PImage> bodyTrackList) {
     PImage outputVideo;
 
     if (currentGlitch != null) {
@@ -38,7 +39,7 @@ public class GlitchLoader {
     }
     if (!currentlyGlitching) {
       currentGlitch = null;
-      glitchedFrameCount = 0;
+      glitchedFrameCount = 0; //TODO in seconds
     }
     return outputVideo;
   }

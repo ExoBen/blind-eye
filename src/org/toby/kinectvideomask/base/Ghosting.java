@@ -1,4 +1,4 @@
-package org.toby.kinectvideomask;
+package org.toby.kinectvideomask.base;
 
 import processing.core.PImage;
 
@@ -11,17 +11,18 @@ import static org.toby.kinectvideomask.Utilities.BLACK;
 class Ghosting {
 
   private Random rand;
+  private boolean currentlyBasing;
 
   Ghosting() {
     rand = new Random();
   }
 
-  PImage ghosting(PImage bodyUpscaled, PImage liveVideo, PImage staticBackground) {
+  PImage executeBase(PImage liveVideo, PImage body, PImage staticBackground) {
     liveVideo.loadPixels();
-    int bodyUpscaledSize = (bodyUpscaled.width * bodyUpscaled.height);
+    int bodyUpscaledSize = (body.width * body.height);
     boolean wasWhiteLR = false;
     for (int i = 0; i < bodyUpscaledSize; i++) {
-      if (bodyUpscaled.pixels[i] == BLACK) {
+      if (body.pixels[i] == BLACK) {
         liveVideo.pixels[i] = staticBackground.pixels[i]; // standard ghosting
         if (wasWhiteLR) {
           randomnessHorizontal(i, liveVideo, staticBackground);
@@ -33,7 +34,7 @@ class Ghosting {
         }
         wasWhiteLR = true;
       }
-      if (bodyUpscaled.pixels[i] == BLACK && floor(i/1302) < 1078 && bodyUpscaled.pixels[i+1304] != BLACK) {
+      if (body.pixels[i] == BLACK && floor(i/1302) < 1078 && body.pixels[i+1304] != BLACK) {
         randomnessVertical(i, liveVideo, staticBackground);
       }
     }
@@ -59,4 +60,5 @@ class Ghosting {
       }
     }
   }
+
 }

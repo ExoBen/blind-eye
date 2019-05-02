@@ -6,6 +6,8 @@ public class Utilities {
 
   public static final int BLACK = -16777216;
   public static final int WHITE = -1;
+  public static final int LEFT_OFFSET = 309;
+  public static final int RIGHT_OFFSET = 1611;
 
   public Utilities() {}
 

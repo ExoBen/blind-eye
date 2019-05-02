@@ -4,11 +4,11 @@ import processing.core.PImage;
 
 import static processing.core.PConstants.THRESHOLD;
 
-class Upscaler {
+public class Upscaler {
 
   Upscaler() {}
 
-  static PImage upscaler(PImage cropBody, int cropBodySize) {
+  public static PImage upscaler(PImage cropBody, int cropBodySize) {
     PImage bodyUpscaled = new PImage(1302, 1080);
     bodyUpscaled.loadPixels();
     for (int i = 0; i < cropBodySize; i++) {
