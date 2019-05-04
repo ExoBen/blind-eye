@@ -10,13 +10,9 @@ import KinectPV2.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.toby.kinectvideomask.Utilities.BLACK;
-import static org.toby.kinectvideomask.Utilities.LEFT_OFFSET;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.*;
 
 public class VideoMaskDegree extends PApplet {
-
-  public static final int KINECT_WIDTH = 434;
-  public static final int KINECT_HEIGHT = 360;
 
   private BaseLoader base;
   private FeatureLoader feature;
@@ -28,6 +24,11 @@ public class VideoMaskDegree extends PApplet {
   private KinectPV2 kinect;
   private long timeBegin;
   private long timeOfLastFeature;
+
+  private boolean someoneHere = false;
+  private long timeOfLastSeen;
+  private long timeSinceLastSeen;
+
   private SoundFile clickBuzz;
   private PImage staticBackground;
   private Random rand;
@@ -42,11 +43,11 @@ public class VideoMaskDegree extends PApplet {
   }
 
   public void setup() {
-    String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
-    String vhsFont = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vcr.ttf";
+    String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
+    String vhsFont = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vcr.ttf";
 
     staticBackground = loadImage(background);
-    staticBackground.resize(1302, 1080);
+    staticBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
     rand = new Random();
     base = new BaseLoader();
     feature = new FeatureLoader();
@@ -65,49 +66,64 @@ public class VideoMaskDegree extends PApplet {
     long currentTime = System.currentTimeMillis() - timeBegin;
     PImage cropBody = kinect.getBodyTrackImage().get(39, 32, KINECT_WIDTH, KINECT_HEIGHT);
     PImage body = Upscaler.upscaler(cropBody, KINECT_WIDTH*KINECT_HEIGHT);
-    PImage liveVideo = kinect.getColorImage().get(309, 0, 1302, 1080);
+    PImage liveVideo = kinect.getColorImage().get(LEFT_OFFSET, 0, MAIN_WIDTH, MAIN_HEIGHT);
     ArrayList<PImage> bodyList = kinect.getBodyTrackUser();
+    if (bodyList.size() > 0) {
+      timeSinceLastSeen = 0;
+      someoneHere = true;
+    } else if (someoneHere) {
+      timeOfLastSeen = System.currentTimeMillis();
+      timeSinceLastSeen = 0;
+      someoneHere = false;
+    } else {
+      timeSinceLastSeen = System.currentTimeMillis() - timeOfLastSeen;
+    }
 
     int random = rand.nextInt(200);
     long timeSince = System.currentTimeMillis() - timeOfLastFeature;
     boolean toFeature = (timeSince > 4000 && rand.nextInt(100) == 0) || timeSince > 6000;
 
-    if (toFeature || currentlyFeaturing || random == 0 || currentlyGlitching) {
-      if (toFeature || currentlyFeaturing) {
-        //featuring
-        outputVideo = feature.executeFeature(liveVideo, body, staticBackground);
-        currentlyFeaturing = feature.isCurrentlyFeaturing();
-        if (!clickBuzz.isPlaying()) {
-          clickBuzz.play();
-        }
-        timeOfLastFeature = System.currentTimeMillis();
-      } else {
-        outputVideo = liveVideo;
-      }
-      if (random == 0 || currentlyGlitching) {
-        //glitching
-        outputVideo = glitch.executeGlitch(outputVideo, body, bodyList);
-        currentlyGlitching = glitch.isCurrentlyGlitching();
-      }
+    if (timeSinceLastSeen > 5000) {
+      image(new PImage(MAIN_WIDTH, MAIN_HEIGHT), LEFT_DISPLAY_OFFSET, 0);
+      textOverlay.pauseScreen();
     } else {
-      //basing
-      outputVideo = base.executeBase(liveVideo, body, staticBackground, bodyList);
+      if (toFeature || currentlyFeaturing || random == 0 || currentlyGlitching) {
+        if (toFeature || currentlyFeaturing) {
+          //featuring
+          outputVideo = feature.executeFeature(liveVideo, body, staticBackground);
+          currentlyFeaturing = feature.isCurrentlyFeaturing();
+          if (!clickBuzz.isPlaying()) {
+            clickBuzz.play();
+          }
+          timeOfLastFeature = System.currentTimeMillis();
+        } else {
+          outputVideo = liveVideo;
+        }
+        if (random == 0 || currentlyGlitching) {
+          //glitching
+          outputVideo = glitch.executeGlitch(outputVideo, body, bodyList);
+          currentlyGlitching = glitch.isCurrentlyGlitching();
+        }
+      } else {
+        //basing
+        outputVideo = base.executeBase(liveVideo, body, staticBackground, bodyList);
+      }
+      image(outputVideo, LEFT_DISPLAY_OFFSET, 0);
+      textOverlay.info(currentTime, kinect);
     }
-    image(outputVideo, LEFT_OFFSET, 0);
-    textOverlay.textOverlay(currentTime, kinect);
   }
 
   // ---------------------------------------------------------------------
 
   private void setUpSounds() {
-    String softFuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav";
-    String clickBuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/clickBuzz.wav";
+    String softFuzzSound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav";
+    String clickBuzzSound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/clickBuzz.wav";
     SoundFile softFuzz = new SoundFile(this, softFuzzSound);
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
     clickBuzz = new SoundFile(this, clickBuzzSound);
     clickBuzz.amp(0.4f);
-  }
+ }
 
   private void setUpKinect(VideoMaskDegree videoMaskDegree) {
     kinect = new KinectPV2(videoMaskDegree);
@@ -117,12 +133,17 @@ public class VideoMaskDegree extends PApplet {
   }
 
   public void mousePressed() {
-    if (mouseButton == LEFT) {
-      outputVideo.save("resources/bg.png");
-      String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
-      staticBackground = loadImage(background);
-    } else if (mouseButton == RIGHT) {
+    if (mouseButton == RIGHT) {
       exit();
+    }
+  }
+
+  public void keyPressed() {
+    if (key == 32) {
+      outputVideo.save("C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png");
+      String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
+      staticBackground = loadImage(background);
+      System.out.println("space");
     }
   }
 }

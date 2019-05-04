@@ -6,8 +6,7 @@ import processing.core.PApplet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.toby.kinectvideomask.Utilities.LEFT_OFFSET;
-import static org.toby.kinectvideomask.Utilities.RIGHT_OFFSET;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.*;
 
 class TextOverlay extends VideoMaskDegree {
 
@@ -17,13 +16,14 @@ class TextOverlay extends VideoMaskDegree {
     parent = p;
   }
 
-  void textOverlay(long currentTime, KinectPV2 kinect) {
+  void info(long currentTime, KinectPV2 kinect) {
+    parent.textSize(48);
     parent.fill(255);
     parent.text("Time: " + intoSeconds(currentTime) + "s", LEFT_OFFSET + 50, 170);
     parent.text("FPS: " + floor(parent.frameRate), LEFT_OFFSET + 50, 220);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy\nHH:mm:ss");
     String dateTime = sdf.format(new Date());
-    parent.text(dateTime, RIGHT_OFFSET - 270, 995);
+    parent.text(dateTime, RIGHT_DISPLAY_OFFSET - 270, 995);
 
     parent.text(kinect.getBodyTrackUser().size(), LEFT_OFFSET + 50, 120);
     parent.text("REC", LEFT_OFFSET + 50, 70);
@@ -33,6 +33,12 @@ class TextOverlay extends VideoMaskDegree {
       parent.rect(LEFT_OFFSET + 150, 39, 16, 24);
       parent.rect(LEFT_OFFSET + 146, 43, 24, 16);
     }
+  }
+
+  void pauseScreen() {
+    parent.fill(255);
+    parent.textSize(120);
+    parent.text("PAUSED", 800, 400);
   }
 
   private int intoSeconds(long millis) {

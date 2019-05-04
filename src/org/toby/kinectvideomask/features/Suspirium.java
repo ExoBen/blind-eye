@@ -1,12 +1,12 @@
 package org.toby.kinectvideomask.features;
 
-import org.toby.kinectvideomask.Utilities;
+import org.toby.kinectvideomask.UtilitiesAndConstants;
 import processing.core.PImage;
 
 class Suspirium extends AbstractFeature {
 
   PImage executeFeature(PImage liveVideo, PImage body, PImage staticBackground) {
-    return Utilities.twoTone(body, -65135,-16738306);
+    return UtilitiesAndConstants.twoTone(body, -65135,-16738306);
   }
 
 }

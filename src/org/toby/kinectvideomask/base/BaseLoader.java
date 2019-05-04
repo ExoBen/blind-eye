@@ -5,8 +5,8 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
-import static org.toby.kinectvideomask.VideoMaskDegree.KINECT_HEIGHT;
-import static org.toby.kinectvideomask.VideoMaskDegree.KINECT_WIDTH;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.KINECT_HEIGHT;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.KINECT_WIDTH;
 
 public class BaseLoader {
 

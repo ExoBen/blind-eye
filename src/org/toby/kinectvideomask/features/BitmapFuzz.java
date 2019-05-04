@@ -4,8 +4,8 @@ import processing.core.PImage;
 
 import java.util.Random;
 
-import static org.toby.kinectvideomask.Utilities.BLACK;
-import static org.toby.kinectvideomask.Utilities.WHITE;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.BLACK;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.WHITE;
 
 class BitmapFuzz extends AbstractFeature {
 

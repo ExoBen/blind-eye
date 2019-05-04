@@ -6,7 +6,7 @@ import java.util.Random;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
-import static org.toby.kinectvideomask.Utilities.BLACK;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.BLACK;
 
 class Ghosting {
 

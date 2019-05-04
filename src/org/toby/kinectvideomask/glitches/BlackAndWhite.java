@@ -1,10 +1,10 @@
 package org.toby.kinectvideomask.glitches;
 
+import org.toby.kinectvideomask.UtilitiesAndConstants;
 import processing.core.PImage;
-import org.toby.kinectvideomask.Utilities;
 
-import static org.toby.kinectvideomask.Utilities.BLACK;
-import static org.toby.kinectvideomask.Utilities.WHITE;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.BLACK;
+import static org.toby.kinectvideomask.UtilitiesAndConstants.WHITE;
 
 class BlackAndWhite extends AbstractGlitch {
 
@@ -14,7 +14,7 @@ class BlackAndWhite extends AbstractGlitch {
 
   PImage executeGlitch(PImage liveVideo, PImage body, int counter) {
     currentlyGlitching = counter <= 10;
-    return Utilities.twoTone(body, WHITE, BLACK);
+    return UtilitiesAndConstants.twoTone(body, WHITE, BLACK);
   }
 
   boolean stillGlitching() {
