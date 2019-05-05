@@ -22,7 +22,6 @@ public class Upscaler {
       bodyUpscaled.set(0, i*3+1, line);
       bodyUpscaled.set(0, i*3+2, line);
     }
-    bodyUpscaled.filter(THRESHOLD);
     return bodyUpscaled;
   }
 }
