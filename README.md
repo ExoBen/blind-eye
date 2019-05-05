@@ -4,9 +4,8 @@ To Dos:
 1. Making >2 people not look like program is breaking
 
 Permanent:
-* Done:
-  * VHS Audio
-  * Transitions
+* VHS Audio
+* Transitions
 	
 Bugs: <300ms:
 * B&W Masks
@@ -37,6 +36,5 @@ Base:
     * Number near head?
 		
 No-one:
-* Done:
-	* Fade into nothing then "Step Forward"
-	* Turn off sound
+* Fade into nothing then "Step Forward"
+* Turn off sound
