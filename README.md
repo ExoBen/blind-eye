@@ -1,42 +1,52 @@
 ## Kinect Video Mask Project
 
-To Do Priorities:
-	1. Making >2 people not look like program is breaking
-	2. Add below features
+To Dos:
+1. Making >2 people not look like program is breaking
+2. Tape for boundaries?
+3. Transitions between stuff
+4. Add below features...
 
 Permanent:
-	- VHS Audio
-	- Static / 40 mini blobs travelling?
+* Done:
+  * VHS Audio
+* To Do:
+  * Static / 40 mini blobs travelling?
 	
-Glitches:
-	- B&W Masks
-	- B&W Video 
-	- Grey Masks x2
-	- Invert
-	- Very short sound when triggered - random picked from set 
+Glitches - 200ms:
+* Done:
+  * B&W Masks
+  * B&W Video 
+  * Grey Masks x2
+* To Do:
+  * Invert
+  * Very short sound when triggered - random picked from set 
 	
-Features:
-	- BlackAndWhiteStatic
-	- Depth
-	- Grey Static
-	- Show the Past
-	- Bitmap Fuzz?!?
-	- Screen bleeding
-	- Outline
-	- Background static and foreground invisible lines person or either front or back is static.
-	- Sounds?
+Features - 3000ms:
+* Done:
+  * BlackAndWhiteStatic
+  * Depth
+  * Grey Static
+  * Show the Past
+  * Bitmap Fuzz?!?
+* To Do:
+  * Screen bleeding
+  * Outline
+  * Background static and foreground invisible lines person or either front or back is static.
+  * Sounds?
 	
 Base:
-	- Ghosting
-	- Text: Timestamp + Recording + People Count
-	- If (person > 2)
-	-- Ghost one
-	-- Something else
-	-- Number near head?
+* Done:
+  * Ghosting
+  * Text: Timestamp + Recording + People Count
+  * If (person > 2)
+    * Ghost one
+* To Do:
+  * If (person > 2)
+    * Something else
+    * Number near head?
 		
 No-one:
-	- Fade into nothing then "Step Forward"
-	- Turn off sound?
-	
-Tape for boundaries?
-Transitions between stuff
+* Done:
+	* Fade into nothing then "Step Forward"
+* To Do:
+	* Turn off sound?
