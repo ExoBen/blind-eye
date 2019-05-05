@@ -7,9 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import static java.lang.Math.floor;
 import static org.toby.blindeye.UtilitiesAndConstants.*;
 
-class TextOverlay extends BlindEye {
+class TextOverlay {
 
   private PApplet parent;
   private Random rand;
@@ -23,13 +24,13 @@ class TextOverlay extends BlindEye {
     parent.textSize(48);
     parent.fill(255);
 //    parent.text("Time: " + intoSeconds(currentTime) + "s", LEFT_OFFSET + 50, 170);
-    parent.text("FPS: " + floor(parent.frameRate), LEFT_OFFSET + 50, 220);
+    parent.text("FPS: " + (int)floor(parent.frameRate), LEFT_OFFSET + 50, 220);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy\nHH:mm:ss");
     String dateTime = sdf.format(new Date());
     parent.text(dateTime, RIGHT_DISPLAY_OFFSET - 270, 995);
 
     parent.text("REC", LEFT_OFFSET + 50, 70);
-    if (floor(currentTime/1000) % 2 == 0) {
+    if ((int)floor(currentTime/1000) % 2 == 0) {
       parent.fill(255, 0, 0);
       parent.stroke(255, 0, 0);
       parent.rect(LEFT_OFFSET + 150, 39, 16, 24);
@@ -45,7 +46,7 @@ class TextOverlay extends BlindEye {
       parent.fill(255);
       parent.text("LOAD", LEFT_OFFSET + 50, 70);
     } else {
-      if (floor(currentTime / 1000) % 2 == 0) {
+      if ((int)floor(currentTime / 1000) % 2 == 0) {
         parent.textSize(48);
         parent.fill(255);
         parent.text("PAUSE", LEFT_OFFSET + 50, 70);
@@ -62,7 +63,7 @@ class TextOverlay extends BlindEye {
   }
 
   private int intoSeconds(long millis) {
-    return floor(millis/1000);
+    return (int)floor(millis/1000);
   }
 
 }
