@@ -39,14 +39,20 @@ class TextOverlay extends VideoMaskDegree {
     parent.text(kinect.getBodyTrackUser().size(), RIGHT_DISPLAY_OFFSET -70, 70);
   }
 
-  void pauseScreen(long currentTime) {
-    if (floor(currentTime/1000) % 2 == 0) {
+  void pauseScreen(long currentTime, boolean loading) {
+    if (loading) {
       parent.textSize(48);
       parent.fill(255);
-      parent.text("PAUSE", LEFT_OFFSET + 50, 70);
-      parent.stroke(255);
-      parent.rect(LEFT_OFFSET + 215, 37, 8, 28);
-      parent.rect(LEFT_OFFSET + 232, 37, 8, 28);
+      parent.text("LOAD", LEFT_OFFSET + 50, 70);
+    } else {
+      if (floor(currentTime / 1000) % 2 == 0) {
+        parent.textSize(48);
+        parent.fill(255);
+        parent.text("PAUSE", LEFT_OFFSET + 50, 70);
+        parent.stroke(255);
+        parent.rect(LEFT_OFFSET + 215, 37, 8, 28);
+        parent.rect(LEFT_OFFSET + 232, 37, 8, 28);
+      }
     }
 
     parent.textSize(100);

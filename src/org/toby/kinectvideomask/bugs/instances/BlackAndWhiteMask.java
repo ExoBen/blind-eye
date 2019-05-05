@@ -1,18 +1,18 @@
-package org.toby.kinectvideomask.glitches.instances;
+package org.toby.kinectvideomask.bugs.instances;
 
 import KinectPV2.KinectPV2;
 import org.toby.kinectvideomask.UtilitiesAndConstants;
-import org.toby.kinectvideomask.glitches.AbstractGlitch;
+import org.toby.kinectvideomask.bugs.AbstractBug;
 import processing.core.PImage;
 
 import static org.toby.kinectvideomask.UtilitiesAndConstants.BLACK;
 import static org.toby.kinectvideomask.UtilitiesAndConstants.WHITE;
 
-public class BlackAndWhiteMask extends AbstractGlitch {
+public class BlackAndWhiteMask extends AbstractBug {
 
   public BlackAndWhiteMask() {}
 
-  public PImage executeGlitch(PImage liveVideo, PImage body, KinectPV2 kinect) {
+  public PImage executeBug(PImage liveVideo, PImage body, KinectPV2 kinect) {
     return UtilitiesAndConstants.twoTone(body, WHITE, BLACK);
   }
 

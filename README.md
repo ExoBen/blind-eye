@@ -12,26 +12,25 @@ Permanent:
 * To Do:
   * Static / 40 mini blobs travelling?
 	
-Glitches - 200ms:
+Bugs - <300ms:
 * Done:
   * B&W Masks
   * B&W Video 
   * Grey Masks x2
-* To Do:
   * Invert
+* To Do:
+  * Background static and foreground invisible lines person or either front or back is static.
   * Very short sound when triggered - random picked from set 
 	
-Features - 3000ms:
+Features - 2000ms:
 * Done:
   * BlackAndWhiteStatic
   * Depth
   * Grey Static
   * Show the Past
-  * Bitmap Fuzz?!?
 * To Do:
   * Screen bleeding
   * Outline
-  * Background static and foreground invisible lines person or either front or back is static.
   * Sounds?
 	
 Base:
@@ -48,5 +47,4 @@ Base:
 No-one:
 * Done:
 	* Fade into nothing then "Step Forward"
-* To Do:
 	* Turn off sound?

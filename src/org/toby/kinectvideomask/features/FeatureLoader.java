@@ -2,16 +2,17 @@ package org.toby.kinectvideomask.features;
 
 import KinectPV2.KinectPV2;
 import org.toby.kinectvideomask.features.instances.*;
+import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.Random;
 
 public class FeatureLoader {
 
+  private FeatureSounds sounds;
   private Random rand;
   private AbstractFeature currentFeature;
 
-  private BitmapFuzz bitmapFuzz;
   private DepthImage depthImage;
   private GreyStatic greyStatic;
   private BlackAndWhiteStatic blackAndWhiteStatic;
@@ -20,9 +21,10 @@ public class FeatureLoader {
   private boolean currentlyFeaturing;
   private long featureStartTime;
 
-  public FeatureLoader() {
+
+  public FeatureLoader(PApplet p) {
+    sounds = new FeatureSounds(p);
     rand = new Random();
-    bitmapFuzz = new BitmapFuzz();
     depthImage = new DepthImage();
     greyStatic = new GreyStatic();
     showThePast = new ShowThePast();
@@ -37,25 +39,24 @@ public class FeatureLoader {
       if (System.currentTimeMillis() > featureStartTime + 2000) {
         currentFeature = null;
         currentlyFeaturing = false;
+//        sounds.stopFeatureSound();
       }
     } else {
-      int dice = rand.nextInt(10);
+      int dice = rand.nextInt(5);
       switch (dice) {
         case 0:
           currentFeature = depthImage;
           break;
         case 1:
-          currentFeature = bitmapFuzz;
-          break;
-        case 2:
           currentFeature = blackAndWhiteStatic;
           break;
-        case 3:
+        case 2:
           currentFeature = greyStatic;
           break;
         default:
           currentFeature = showThePast;
       }
+//      sounds.playFeatureSound();
       System.out.println(currentFeature.toString());
       currentlyFeaturing = true;
       featureStartTime = System.currentTimeMillis();

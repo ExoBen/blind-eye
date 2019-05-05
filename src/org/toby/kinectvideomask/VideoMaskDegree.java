@@ -2,7 +2,7 @@ package org.toby.kinectvideomask;
 
 import org.toby.kinectvideomask.base.BaseLoader;
 import org.toby.kinectvideomask.features.FeatureLoader;
-import org.toby.kinectvideomask.glitches.GlitchLoader;
+import org.toby.kinectvideomask.bugs.BugLoader;
 import processing.core.*;
 import processing.sound.*;
 import KinectPV2.*;
@@ -17,8 +17,8 @@ public class VideoMaskDegree extends PApplet {
   private BaseLoader base;
   private FeatureLoader feature;
   private boolean currentlyFeaturing = false;
-  private GlitchLoader glitch;
-  private boolean currentlyGlitching = false;
+  private BugLoader bug;
+  private boolean currentlyBugging = false;
 
   private TextOverlay textOverlay;
   private KinectPV2 kinect;
@@ -28,12 +28,13 @@ public class VideoMaskDegree extends PApplet {
   private boolean someoneHere = false;
   private long timeOfLastSeen;
   private long timeSinceLastSeen;
-  private int darkness;
 
-  private SoundFile clickBuzz;
   private PImage staticBackground;
   private Random rand;
   private PImage outputVideo;
+  private SoundFile softFuzz;
+  private long someoneFoundTime;
+  private boolean loading = false;
 
   public static void main(String[] args) {
     PApplet.main("org.toby.kinectvideomask.VideoMaskDegree");
@@ -51,8 +52,8 @@ public class VideoMaskDegree extends PApplet {
     staticBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
     rand = new Random();
     base = new BaseLoader();
-    feature = new FeatureLoader();
-    glitch = new GlitchLoader();
+    feature = new FeatureLoader(this);
+    bug = new BugLoader(this);
     textOverlay = new TextOverlay(this);
     timeBegin = System.currentTimeMillis();
     timeOfLastFeature = timeBegin;
@@ -73,42 +74,35 @@ public class VideoMaskDegree extends PApplet {
     liveVideo.filter(GRAY);
 
     ArrayList<PImage> bodyList = kinect.getBodyTrackUser();
-    if (bodyList.size() > 0) {
-      timeSinceLastSeen = 0;
-      someoneHere = true;
-    } else if (someoneHere) {
-      timeOfLastSeen = System.currentTimeMillis();
-      timeSinceLastSeen = 0;
-      someoneHere = false;
-      darkness = 0;
-    } else {
-      timeSinceLastSeen = System.currentTimeMillis() - timeOfLastSeen;
-    }
+    bodyCounter(bodyList);
 
-    int random = rand.nextInt(200);
-    long timeSince = System.currentTimeMillis() - timeOfLastFeature;
-    boolean toFeature = (timeSince > 8000 && rand.nextInt(200) == 0) || timeSince > 10000;
+    int random = rand.nextInt(250);
+    long timeSinceLastFeature = System.currentTimeMillis() - timeOfLastFeature;
+    boolean toFeature = (timeSinceLastFeature > 13000 && rand.nextInt(200) == 0) || timeSinceLastFeature > 15000;
 
-    if (timeSinceLastSeen > 10000) {
+    if (timeSinceLastSeen > 5000 || loading) {
+      stopFuzz();
       image(new PImage(MAIN_WIDTH, MAIN_HEIGHT), LEFT_DISPLAY_OFFSET, 0);
-      textOverlay.pauseScreen(currentTime);
+      if (loading) {
+        textOverlay.pauseScreen(currentTime, true);
+      } else {
+        textOverlay.pauseScreen(currentTime, false);
+      }
     } else {
-      if (toFeature || currentlyFeaturing || random == 0 || currentlyGlitching) {
+      startFuzz();
+      if (toFeature || currentlyFeaturing || random == 0 || currentlyBugging) {
         if (toFeature || currentlyFeaturing) {
           //featuring
           outputVideo = feature.executeFeature(liveVideo, body, staticBackground, kinect);
           currentlyFeaturing = feature.isCurrentlyFeaturing();
-          if (!clickBuzz.isPlaying()) {
-            clickBuzz.play();
-          }
           timeOfLastFeature = System.currentTimeMillis();
         } else {
           outputVideo = liveVideo;
         }
-        if (random == 0 || currentlyGlitching) {
-          //glitching
-          outputVideo = glitch.executeGlitch(outputVideo, body, kinect);
-          currentlyGlitching = glitch.isCurrentlyGlitching();
+        if (random == 0 || currentlyBugging) {
+          //bugging
+          outputVideo = bug.executeBug(outputVideo, body, kinect);
+          currentlyBugging = bug.isCurrentlyBugging();
         }
       } else {
         //basing
@@ -127,13 +121,22 @@ public class VideoMaskDegree extends PApplet {
 
   private void setUpSounds() {
     String softFuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav";
-    String clickBuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/clickBuzz.wav";
-    SoundFile softFuzz = new SoundFile(this, softFuzzSound);
+    softFuzz = new SoundFile(this, softFuzzSound);
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
-    clickBuzz = new SoundFile(this, clickBuzzSound);
-    clickBuzz.amp(0.4f);
  }
+
+  private void startFuzz() {
+    if (!softFuzz.isPlaying()) {
+      softFuzz.loop();
+    }
+  }
+
+  private void stopFuzz() {
+    if (softFuzz.isPlaying()) {
+      softFuzz.stop();
+    }
+  }
 
   private void setUpKinect(VideoMaskDegree videoMaskDegree) {
     kinect = new KinectPV2(videoMaskDegree);
@@ -142,6 +145,27 @@ public class VideoMaskDegree extends PApplet {
     kinect.enableDepthImg(true);
     kinect.enableInfraredImg(true);
     kinect.init();
+  }
+
+  private void bodyCounter(ArrayList<PImage> bodyList) {
+    if (bodyList.size() > 0 && (System.currentTimeMillis() - someoneFoundTime) < 1500) {
+      //people tracking < 1 second
+      loading = true;
+      timeSinceLastSeen = 0;
+      someoneHere = true;
+    } else if (bodyList.size() > 0) {
+      //people tracking > 1 second
+      loading = false;
+    } else if (someoneHere) {
+      //just lost people
+      timeOfLastSeen = System.currentTimeMillis();
+      timeSinceLastSeen = 0;
+      someoneHere = false;
+    } else {
+      //no people
+      timeSinceLastSeen = System.currentTimeMillis() - timeOfLastSeen;
+      someoneFoundTime = System.currentTimeMillis();
+    }
   }
 
   public void mousePressed() {
