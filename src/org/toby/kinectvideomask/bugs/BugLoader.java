@@ -1,17 +1,15 @@
 package org.toby.kinectvideomask.bugs;
 
 import KinectPV2.KinectPV2;
+import org.toby.kinectvideomask.bugs.instances.*;
 import org.toby.kinectvideomask.features.instances.Invert;
-import org.toby.kinectvideomask.bugs.instances.BlackAndWhiteMask;
-import org.toby.kinectvideomask.bugs.instances.BlackAndWhiteVideo;
-import org.toby.kinectvideomask.bugs.instances.DarkLightGreyMask;
-import org.toby.kinectvideomask.bugs.instances.LightDarkGreyMask;
+import org.toby.kinectvideomask.interfaces.LoadersInterface;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.Random;
 
-public class BugLoader {
+public class BugLoader implements LoadersInterface {
 
   private BugSounds sounds;
   private Random rand;
@@ -22,6 +20,8 @@ public class BugLoader {
   private LightDarkGreyMask lightDarkGreyMask;
   private BlackAndWhiteVideo blackAndWhiteVideo;
   private Invert invert;
+  private SavedBackgroundOnBlack savedBackgroundOnBlack;
+  private BWStaticOnSavedBackground bWStaticOnSavedBackground;
 
   private boolean currentlyBugging;
   private long bugStartTime;
@@ -35,20 +35,22 @@ public class BugLoader {
     lightDarkGreyMask = new LightDarkGreyMask();
     blackAndWhiteVideo = new BlackAndWhiteVideo();
     invert = new Invert();
+    savedBackgroundOnBlack = new SavedBackgroundOnBlack();
+    bWStaticOnSavedBackground = new BWStaticOnSavedBackground();
   }
 
-  public PImage executeBug(PImage liveVideo, PImage body, KinectPV2 kinect) {
+  public PImage execute(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
     PImage outputVideo;
 
     if (currentBug != null) {
-      outputVideo = executeAndCheck(liveVideo, body, kinect);
+      outputVideo = executeBug(liveVideo, body, savedBackground, kinect);
       if (System.currentTimeMillis() > bugStartTime + currentBugLength) {
         currentBug = null;
         currentlyBugging = false;
 //        sounds.stopFeatureSound();
       }
     } else {
-      int dice = rand.nextInt(5);
+      int dice = rand.nextInt(7);
       switch (dice) {
         case 0:
           currentBug = darkLightGreyMask;
@@ -62,15 +64,20 @@ public class BugLoader {
         case 3:
           currentBug = blackAndWhiteVideo;
           break;
-        default:
+        case 4:
           currentBug = invert;
+          break;
+        case 5:
+          currentBug = savedBackgroundOnBlack;
+          break;
+        default:
+          currentBug = bWStaticOnSavedBackground;
       }
       sounds.playFeatureSound();
       currentBugLength = rand.nextInt(300);
-      System.out.println(currentBug.toString());
       currentlyBugging = true;
       bugStartTime = System.currentTimeMillis();
-      outputVideo = executeAndCheck(liveVideo, body, kinect);
+      outputVideo = executeBug(liveVideo, body, savedBackground, kinect);
     }
     return outputVideo;
   }
@@ -79,8 +86,7 @@ public class BugLoader {
     return currentlyBugging;
   }
 
-  private PImage executeAndCheck(PImage liveVideo, PImage body, KinectPV2 kinect) {
-    PImage outputVideo = currentBug.executeBug(liveVideo, body, kinect);
-    return outputVideo;
+  private PImage executeBug(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
+    return currentBug.executeBug(liveVideo, body, savedBackground, kinect);
   }
 }

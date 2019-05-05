@@ -5,6 +5,6 @@ import processing.core.PImage;
 
 public abstract class AbstractBug {
 
-  public abstract PImage executeBug(PImage liveVideo, PImage body, KinectPV2 kinect);
+  public abstract PImage executeBug(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect);
 
 }

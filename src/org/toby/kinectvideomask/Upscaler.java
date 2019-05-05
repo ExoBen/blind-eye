@@ -2,8 +2,6 @@ package org.toby.kinectvideomask;
 
 import processing.core.PImage;
 
-import static processing.core.PConstants.THRESHOLD;
-
 public class Upscaler {
 
   Upscaler() {}

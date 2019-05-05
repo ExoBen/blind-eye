@@ -16,14 +16,14 @@ public class BaseLoader {
     ghost = new Ghosting();
   }
 
-  public PImage executeBase(PImage liveVideo, PImage body, PImage staticBackground, ArrayList<PImage> bodyList) {
+  public PImage executeBase(PImage liveVideo, PImage body, PImage savedBackground, ArrayList<PImage> bodyList) {
     PImage outputVideo;
 
     if (bodyList.size() > 2) {
       PImage upscaledSecondPerson = Upscaler.upscaler(bodyList.get(1), KINECT_WIDTH * KINECT_HEIGHT);
-      outputVideo = ghost.executeBase(liveVideo, upscaledSecondPerson, staticBackground);
+      outputVideo = ghost.executeBase(liveVideo, upscaledSecondPerson, savedBackground);
     } else {
-      outputVideo = ghost.executeBase(liveVideo, body, staticBackground);
+      outputVideo = ghost.executeBase(liveVideo, body, savedBackground);
     }
     return outputVideo;
   }

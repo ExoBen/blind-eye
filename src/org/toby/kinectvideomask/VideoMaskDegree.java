@@ -29,7 +29,7 @@ public class VideoMaskDegree extends PApplet {
   private long timeOfLastSeen;
   private long timeSinceLastSeen;
 
-  private PImage staticBackground;
+  private PImage savedBackground;
   private Random rand;
   private PImage outputVideo;
   private SoundFile softFuzz;
@@ -48,8 +48,8 @@ public class VideoMaskDegree extends PApplet {
     String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
     String vhsFont = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vcr.ttf";
 
-    staticBackground = loadImage(background);
-    staticBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
+    savedBackground = loadImage(background);
+    savedBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
     rand = new Random();
     base = new BaseLoader();
     feature = new FeatureLoader(this);
@@ -93,7 +93,7 @@ public class VideoMaskDegree extends PApplet {
       if (toFeature || currentlyFeaturing || random == 0 || currentlyBugging) {
         if (toFeature || currentlyFeaturing) {
           //featuring
-          outputVideo = feature.executeFeature(liveVideo, body, staticBackground, kinect);
+          outputVideo = feature.execute(liveVideo, body, savedBackground, kinect);
           currentlyFeaturing = feature.isCurrentlyFeaturing();
           timeOfLastFeature = System.currentTimeMillis();
         } else {
@@ -101,12 +101,12 @@ public class VideoMaskDegree extends PApplet {
         }
         if (random == 0 || currentlyBugging) {
           //bugging
-          outputVideo = bug.executeBug(outputVideo, body, kinect);
+          outputVideo = bug.execute(outputVideo, body, savedBackground, kinect);
           currentlyBugging = bug.isCurrentlyBugging();
         }
       } else {
         //basing
-        outputVideo = base.executeBase(liveVideo, body, staticBackground, bodyList);
+        outputVideo = base.executeBase(liveVideo, body, savedBackground, bodyList);
       }
       if (timeSinceLastSeen > 4500) {
         float op = floor(254-(((timeSinceLastSeen - 4500f)/500f)*255f));
@@ -178,7 +178,7 @@ public class VideoMaskDegree extends PApplet {
     if (key == 32) {
       outputVideo.save("F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png");
       String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
-      staticBackground = loadImage(background);
+      savedBackground = loadImage(background);
       System.out.println("space");
     }
   }

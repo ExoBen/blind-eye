@@ -9,7 +9,7 @@ public class DarkLightGreyMask extends AbstractBug {
 
   public DarkLightGreyMask() {}
 
-  public PImage executeBug(PImage liveVideo, PImage body, KinectPV2 kinect) {
+  public PImage executeBug(PImage liveVideo, PImage body, PImage staticBackground, KinectPV2 kinect) {
     return UtilitiesAndConstants.twoTone(body, -14803426, -2302756);
   }
 

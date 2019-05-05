@@ -12,7 +12,7 @@ public class BlackAndWhiteMask extends AbstractBug {
 
   public BlackAndWhiteMask() {}
 
-  public PImage executeBug(PImage liveVideo, PImage body, KinectPV2 kinect) {
+  public PImage executeBug(PImage liveVideo, PImage body, PImage staticBackground, KinectPV2 kinect) {
     return UtilitiesAndConstants.twoTone(body, WHITE, BLACK);
   }
 

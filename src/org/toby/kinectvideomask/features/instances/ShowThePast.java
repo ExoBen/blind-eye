@@ -13,7 +13,7 @@ public class ShowThePast extends AbstractFeature {
 
   public ShowThePast() {}
 
-  public PImage executeFeature(PImage liveVideo, PImage body, PImage staticBackground, KinectPV2 kinect) {
+  public PImage executeFeature(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
     PImage outputVideo;
     if (savedFrame[counter] != null) {
       outputVideo = savedFrame[counter];

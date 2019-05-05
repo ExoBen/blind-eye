@@ -12,26 +12,23 @@ Permanent:
 * To Do:
   * Static / 40 mini blobs travelling?
 	
-Bugs - <300ms:
+Bugs: <300ms:
 * Done:
   * B&W Masks
   * B&W Video 
   * Grey Masks x2
   * Invert
-  * Short sound - random picked from set 
-* To Do:
-  * Background static and foreground invisible lines person or either front or back is static.
-	
-Features - 2000ms:
+  * Short sound - random picked from set
+  * BWStatic On Saved Background
+  * Black On Saved Background
+
+Features: 2000ms:
 * Done:
   * BlackAndWhiteStatic
   * Depth
   * Grey Static
   * Show the Past
   * Longer sounds
-* To Do:
-  * Screen bleeding
-  * Outline
 	
 Base:
 * Done:
@@ -41,6 +38,7 @@ Base:
     * Ghost one
 * To Do:
   * If (person > 2)
+    * Outline?
     * Something else
     * Number near head?
 		

@@ -1,9 +1,10 @@
 package org.toby.kinectvideomask.features;
 
+import org.toby.kinectvideomask.interfaces.SoundsInterface;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
 
-class FeatureSounds {
+class FeatureSounds implements SoundsInterface {
 
   private PApplet parent;
   private SoundFile feature1;
@@ -20,7 +21,7 @@ class FeatureSounds {
     feature1.amp(0.3f);
   }
 
-  void playFeatureSound() {
+  public void playFeatureSound() {
     feature1.play();
   }
 

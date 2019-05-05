@@ -1,19 +1,18 @@
 package org.toby.kinectvideomask.bugs;
 
+import org.toby.kinectvideomask.interfaces.SoundsInterface;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BugSounds {
+public class BugSounds implements SoundsInterface {
 
   private Random rand;
   private PApplet parent;
   private ArrayList<SoundFile> sounds;
   private long lastSoundTime;
-
-  private SoundFile current;
 
   BugSounds(PApplet p) {
     parent = p;
@@ -34,11 +33,10 @@ public class BugSounds {
     sounds.add(bug2);
   }
 
-  void playFeatureSound() {
+  public void playFeatureSound() {
     if (System.currentTimeMillis() - lastSoundTime > 1000) {
       SoundFile currentSound = sounds.get(rand.nextInt(sounds.size()));
       currentSound.play();
-      current = currentSound;
     }
     lastSoundTime = System.currentTimeMillis();
   }
