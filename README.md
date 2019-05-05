@@ -1,4 +1,5 @@
-## Kinect Video Mask Project
+## Blind Eye
+#### Kinect Video Mask Project
 
 To Dos:
 

@@ -33,6 +33,4 @@ public class DownloadedStatic extends AbstractBug {
     return statics.get(startingPoint+frame);
   }
 
-
-
 }
