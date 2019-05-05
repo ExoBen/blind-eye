@@ -77,7 +77,7 @@ public class VideoMaskDegree extends PApplet {
     ArrayList<PImage> bodyList = kinect.getBodyTrackUser();
     bodyCounter(bodyList);
 
-    int random = rand.nextInt(250);
+    boolean shouldBug = rand.nextInt(250) == 0;
     long timeSinceLastFeature = System.currentTimeMillis() - timeOfLastFeature;
     boolean toFeature = (timeSinceLastFeature > 18000 && rand.nextInt(250) == 0) || timeSinceLastFeature > 25000;
 
@@ -93,7 +93,7 @@ public class VideoMaskDegree extends PApplet {
       image(bug.executeDownloadedStatic(outputVideo, body, savedBackground, kinect), LEFT_DISPLAY_OFFSET, 0);
     } else {
       startFuzz();
-      if (toFeature || currentlyFeaturing || random == 0 || currentlyBugging) {
+      if (toFeature || currentlyFeaturing || shouldBug || currentlyBugging) {
         if (toFeature || currentlyFeaturing) {
           //featuring
           outputVideo = feature.execute(liveVideo, body, savedBackground, kinect);
@@ -102,14 +102,14 @@ public class VideoMaskDegree extends PApplet {
         } else {
           outputVideo = liveVideo;
         }
-        if (random == 0 || currentlyBugging) {
+        if (shouldBug || currentlyBugging) {
           //bugging
           outputVideo = bug.execute(outputVideo, body, savedBackground, kinect);
           currentlyBugging = bug.isCurrentlyBugging();
         }
       } else {
         //basing
-        outputVideo = base.executeBase(liveVideo, body, savedBackground, bodyList);
+        outputVideo = base.executeBase(liveVideo, body, savedBackground, kinect);
       }
       if (timeSinceLastSeen > 4500) {
         float op = floor(254-(((timeSinceLastSeen - 4500f)/500f)*255f));

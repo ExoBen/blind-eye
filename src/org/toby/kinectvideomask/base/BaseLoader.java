@@ -1,12 +1,7 @@
 package org.toby.kinectvideomask.base;
 
-import org.toby.kinectvideomask.Upscaler;
+import KinectPV2.KinectPV2;
 import processing.core.PImage;
-
-import java.util.ArrayList;
-
-import static org.toby.kinectvideomask.UtilitiesAndConstants.KINECT_HEIGHT;
-import static org.toby.kinectvideomask.UtilitiesAndConstants.KINECT_WIDTH;
 
 public class BaseLoader {
 
@@ -16,16 +11,8 @@ public class BaseLoader {
     ghost = new Ghosting();
   }
 
-  public PImage executeBase(PImage liveVideo, PImage body, PImage savedBackground, ArrayList<PImage> bodyList) {
-    PImage outputVideo;
-
-    if (bodyList.size() > 2) {
-      PImage upscaledSecondPerson = Upscaler.upscaler(bodyList.get(1), KINECT_WIDTH * KINECT_HEIGHT);
-      outputVideo = ghost.executeBase(liveVideo, upscaledSecondPerson, savedBackground);
-    } else {
-      outputVideo = ghost.executeBase(liveVideo, body, savedBackground);
-    }
-    return outputVideo;
+  public PImage executeBase(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
+    return ghost.execute(liveVideo, body, savedBackground, kinect);
   }
 
 }

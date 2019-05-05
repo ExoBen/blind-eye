@@ -1,7 +1,6 @@
 ## Kinect Video Mask Project
 
 To Dos:
-1. Making >2 people not look like program is breaking
 
 Permanent:
 * VHS Audio
@@ -29,11 +28,6 @@ Base:
   * Text: Timestamp + Recording + People Count
   * If (person > 2)
     * Ghost one
-* To Do:
-  * If (person > 2)
-    * Outline?
-    * Something else
-    * Number near head?
 		
 No-one:
 * Fade into nothing then "Step Forward"

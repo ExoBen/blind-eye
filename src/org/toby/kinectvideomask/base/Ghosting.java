@@ -1,5 +1,7 @@
 package org.toby.kinectvideomask.base;
 
+import KinectPV2.KinectPV2;
+import org.toby.kinectvideomask.interfaces.LoadersInterface;
 import processing.core.PImage;
 
 import java.util.Random;
@@ -8,16 +10,15 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 import static org.toby.kinectvideomask.UtilitiesAndConstants.BLACK;
 
-class Ghosting {
+class Ghosting implements LoadersInterface {
 
   private Random rand;
-  private boolean currentlyBasing;
 
   Ghosting() {
     rand = new Random();
   }
 
-  PImage executeBase(PImage liveVideo, PImage body, PImage savedBackground) {
+  public PImage execute(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinectPV2) {
     liveVideo.loadPixels();
     int bodyUpscaledSize = (body.width * body.height);
     boolean wasWhiteLR = false;
