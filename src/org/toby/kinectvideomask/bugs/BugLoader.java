@@ -65,7 +65,7 @@ public class BugLoader {
         default:
           currentBug = invert;
       }
-//      sounds.playFeatureSound();
+      sounds.playFeatureSound();
       currentBugLength = rand.nextInt(300);
       System.out.println(currentBug.toString());
       currentlyBugging = true;

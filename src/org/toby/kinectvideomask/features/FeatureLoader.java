@@ -39,7 +39,6 @@ public class FeatureLoader {
       if (System.currentTimeMillis() > featureStartTime + 2000) {
         currentFeature = null;
         currentlyFeaturing = false;
-//        sounds.stopFeatureSound();
       }
     } else {
       int dice = rand.nextInt(5);
@@ -56,8 +55,7 @@ public class FeatureLoader {
         default:
           currentFeature = showThePast;
       }
-//      sounds.playFeatureSound();
-      System.out.println(currentFeature.toString());
+      sounds.playFeatureSound();
       currentlyFeaturing = true;
       featureStartTime = System.currentTimeMillis();
       outputVideo = execute(liveVideo, body, staticBackground, kinect);

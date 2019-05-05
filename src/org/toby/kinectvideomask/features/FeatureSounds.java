@@ -3,37 +3,25 @@ package org.toby.kinectvideomask.features;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
 
-public class FeatureSounds {
+class FeatureSounds {
 
   private PApplet parent;
-  private SoundFile clickBuzz;
+  private SoundFile feature1;
 
-  private SoundFile current;
 
   FeatureSounds(PApplet p) {
     parent = p;
     loadSounds();
-
   }
 
   private void loadSounds() {
-    String clickBuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/clickBuzz.wav";
-    clickBuzz = new SoundFile(parent, clickBuzzSound);
-    clickBuzz.amp(0.4f);
+    String clickBuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/feature1.wav";
+    feature1 = new SoundFile(parent, clickBuzzSound);
+    feature1.amp(0.3f);
   }
 
-
-
-  public void playFeatureSound() {
-    // random .play
-    //current = random
-
-  }
-
-
-
-  public void stopFeatureSound() {
-    current.stop();
+  void playFeatureSound() {
+    feature1.play();
   }
 
 }

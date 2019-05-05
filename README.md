@@ -18,9 +18,9 @@ Bugs - <300ms:
   * B&W Video 
   * Grey Masks x2
   * Invert
+  * Short sound - random picked from set 
 * To Do:
   * Background static and foreground invisible lines person or either front or back is static.
-  * Very short sound when triggered - random picked from set 
 	
 Features - 2000ms:
 * Done:
@@ -28,10 +28,10 @@ Features - 2000ms:
   * Depth
   * Grey Static
   * Show the Past
+  * Longer sounds
 * To Do:
   * Screen bleeding
   * Outline
-  * Sounds?
 	
 Base:
 * Done:
@@ -47,4 +47,4 @@ Base:
 No-one:
 * Done:
 	* Fade into nothing then "Step Forward"
-	* Turn off sound?
+	* Turn off sound
