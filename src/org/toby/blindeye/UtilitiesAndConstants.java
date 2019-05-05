@@ -37,7 +37,7 @@ public class UtilitiesAndConstants {
   public static ArrayList<PImage> loadStatics(PApplet parent) {
     ArrayList<PImage> statics = new ArrayList<>();
     for (int i = 1; i < 13; i++) {
-      String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/imagesOfStatic/static" + i + ".png";
+      String background = "F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/imagesOfStatic/static" + i + ".png";
       statics.add(parent.loadImage(background));
     }
     return statics;
