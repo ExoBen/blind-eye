@@ -1,6 +1,9 @@
 package org.toby.kinectvideomask;
 
+import processing.core.PApplet;
 import processing.core.PImage;
+
+import java.util.ArrayList;
 
 public class UtilitiesAndConstants {
 
@@ -29,6 +32,15 @@ public class UtilitiesAndConstants {
       }
     }
     return mask;
+  }
+
+  public static ArrayList<PImage> loadStatics(PApplet parent) {
+    ArrayList<PImage> statics = new ArrayList<>();
+    for (int i = 1; i < 13; i++) {
+      String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/imagesOfStatic/static" + i + ".png";
+      statics.add(parent.loadImage(background));
+    }
+    return statics;
   }
 
 }

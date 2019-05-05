@@ -2,33 +2,27 @@
 
 To Dos:
 1. Making >2 people not look like program is breaking
-2. Tape for boundaries?
-3. Transitions between stuff
-4. Add below features...
 
 Permanent:
 * Done:
   * VHS Audio
-* To Do:
-  * Static / 40 mini blobs travelling?
+  * Transitions
 	
 Bugs: <300ms:
-* Done:
-  * B&W Masks
-  * B&W Video 
-  * Grey Masks x2
-  * Invert
-  * Short sound - random picked from set
-  * BWStatic On Saved Background
-  * Black On Saved Background
+* B&W Masks
+* B&W Video 
+* Grey Masks x2
+* Invert
+* BWStatic On Saved Background
+* Black On Saved Background
+* Short sounds
 
 Features: 2000ms:
-* Done:
-  * BlackAndWhiteStatic
-  * Depth
-  * Grey Static
-  * Show the Past
-  * Longer sounds
+* BlackAndWhiteStatic
+* Depth
+* Grey Static
+* Show the Past
+* Longer sounds
 	
 Base:
 * Done:

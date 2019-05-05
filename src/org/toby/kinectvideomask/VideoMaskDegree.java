@@ -35,6 +35,7 @@ public class VideoMaskDegree extends PApplet {
   private SoundFile softFuzz;
   private long someoneFoundTime;
   private boolean loading = false;
+  private boolean loaded;
 
   public static void main(String[] args) {
     PApplet.main("org.toby.kinectvideomask.VideoMaskDegree");
@@ -78,7 +79,7 @@ public class VideoMaskDegree extends PApplet {
 
     int random = rand.nextInt(250);
     long timeSinceLastFeature = System.currentTimeMillis() - timeOfLastFeature;
-    boolean toFeature = (timeSinceLastFeature > 13000 && rand.nextInt(200) == 0) || timeSinceLastFeature > 15000;
+    boolean toFeature = (timeSinceLastFeature > 18000 && rand.nextInt(250) == 0) || timeSinceLastFeature > 25000;
 
     if (timeSinceLastSeen > 5000 || loading) {
       stopFuzz();
@@ -88,6 +89,8 @@ public class VideoMaskDegree extends PApplet {
       } else {
         textOverlay.pauseScreen(currentTime, false);
       }
+    } else if (loaded) {
+      image(bug.executeDownloadedStatic(outputVideo, body, savedBackground, kinect), LEFT_DISPLAY_OFFSET, 0);
     } else {
       startFuzz();
       if (toFeature || currentlyFeaturing || random == 0 || currentlyBugging) {
@@ -120,7 +123,7 @@ public class VideoMaskDegree extends PApplet {
   // ---------------------------------------------------------------------
 
   private void setUpSounds() {
-    String softFuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/vhs.wav";
+    String softFuzzSound = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/audio/vhs.wav";
     softFuzz = new SoundFile(this, softFuzzSound);
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
@@ -153,15 +156,23 @@ public class VideoMaskDegree extends PApplet {
       loading = true;
       timeSinceLastSeen = 0;
       someoneHere = true;
-    } else if (bodyList.size() > 0) {
-      //people tracking > 1 second
+    } else if (bodyList.size() > 0 && (System.currentTimeMillis() - someoneFoundTime) < 1700) {
+      loaded = true;
       loading = false;
+      timeSinceLastSeen = 0;
+      someoneHere = true;
+    } else if (bodyList.size() > 0) {
+      //people tracking > 1.7 second
+      loading = false;
+      loaded = false;
     } else if (someoneHere) {
+      loaded = false;
       //just lost people
       timeOfLastSeen = System.currentTimeMillis();
       timeSinceLastSeen = 0;
       someoneHere = false;
     } else {
+      loaded = false;
       //no people
       timeSinceLastSeen = System.currentTimeMillis() - timeOfLastSeen;
       someoneFoundTime = System.currentTimeMillis();
@@ -179,7 +190,6 @@ public class VideoMaskDegree extends PApplet {
       outputVideo.save("F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png");
       String background = "F:/OneDrive - University of Dundee/Year 4/Kinect Video Mask/kinect-video-mask/resources/bg.png";
       savedBackground = loadImage(background);
-      System.out.println("space");
     }
   }
 }

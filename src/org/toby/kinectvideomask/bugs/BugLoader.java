@@ -22,6 +22,7 @@ public class BugLoader implements LoadersInterface {
   private Invert invert;
   private SavedBackgroundOnBlack savedBackgroundOnBlack;
   private BWStaticOnSavedBackground bWStaticOnSavedBackground;
+  private DownloadedStatic downloadedStatic;
 
   private boolean currentlyBugging;
   private long bugStartTime;
@@ -37,6 +38,7 @@ public class BugLoader implements LoadersInterface {
     invert = new Invert();
     savedBackgroundOnBlack = new SavedBackgroundOnBlack();
     bWStaticOnSavedBackground = new BWStaticOnSavedBackground();
+    downloadedStatic = new DownloadedStatic(p);
   }
 
   public PImage execute(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
@@ -47,10 +49,9 @@ public class BugLoader implements LoadersInterface {
       if (System.currentTimeMillis() > bugStartTime + currentBugLength) {
         currentBug = null;
         currentlyBugging = false;
-//        sounds.stopFeatureSound();
       }
     } else {
-      int dice = rand.nextInt(7);
+      int dice = rand.nextInt(8);
       switch (dice) {
         case 0:
           currentBug = darkLightGreyMask;
@@ -70,16 +71,28 @@ public class BugLoader implements LoadersInterface {
         case 5:
           currentBug = savedBackgroundOnBlack;
           break;
-        default:
+        case 6:
           currentBug = bWStaticOnSavedBackground;
+          break;
+        default:
+          currentBug = downloadedStatic;
       }
-      sounds.playFeatureSound();
-      currentBugLength = rand.nextInt(300);
+      sounds.playSound();
+      currentBugLength = rand.nextInt(200) + 100;
       currentlyBugging = true;
       bugStartTime = System.currentTimeMillis();
       outputVideo = executeBug(liveVideo, body, savedBackground, kinect);
     }
     return outputVideo;
+  }
+
+  public PImage executeDownloadedStatic(PImage liveVideo, PImage body, PImage savedBackground, KinectPV2 kinect) {
+    currentBug = downloadedStatic;
+    sounds.playSound();
+    currentBugLength = rand.nextInt(100) + 200;
+    currentlyBugging = true;
+    bugStartTime = System.currentTimeMillis();
+    return executeBug(liveVideo, body, savedBackground, kinect);
   }
 
   public boolean isCurrentlyBugging() {

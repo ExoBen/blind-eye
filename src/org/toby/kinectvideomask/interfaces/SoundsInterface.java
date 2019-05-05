@@ -1,5 +1,5 @@
 package org.toby.kinectvideomask.interfaces;
 
 public interface SoundsInterface {
-  void playFeatureSound();
+  void playSound();
 }
