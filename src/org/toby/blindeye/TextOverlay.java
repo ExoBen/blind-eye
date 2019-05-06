@@ -23,8 +23,8 @@ class TextOverlay {
   void info(long currentTime, KinectPV2 kinect) {
     parent.textSize(48);
     parent.fill(255);
-//    parent.text("Time: " + intoSeconds(currentTime) + "s", LEFT_OFFSET + 50, 170);
-    parent.text("FPS: " + (int)floor(parent.frameRate), LEFT_OFFSET + 50, 220);
+    // parent.text("Time: " + intoSeconds(currentTime) + "s", LEFT_OFFSET + 50, 170);
+    // parent.text("FPS: " + (int)floor(parent.frameRate), LEFT_OFFSET + 50, 220);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy\nHH:mm:ss");
     String dateTime = sdf.format(new Date());
     parent.text(dateTime, RIGHT_DISPLAY_OFFSET - 270, 995);
