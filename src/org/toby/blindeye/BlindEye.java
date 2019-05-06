@@ -46,8 +46,8 @@ public class BlindEye extends PApplet {
   }
 
   public void setup() {
-    String background = "F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
-    String vhsFont = "F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/vcr.ttf";
+    String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
+    String vhsFont = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/vcr.ttf";
 
     savedBackground = loadImage(background);
     savedBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
@@ -123,7 +123,7 @@ public class BlindEye extends PApplet {
   // ---------------------------------------------------------------------
 
   private void setUpSounds() {
-    String softFuzzSound = "F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/audio/vhs.wav";
+    String softFuzzSound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/audio/vhs.wav";
     softFuzz = new SoundFile(this, softFuzzSound);
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
@@ -187,8 +187,8 @@ public class BlindEye extends PApplet {
 
   public void keyPressed() {
     if (key == 32) {
-      outputVideo.save("F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png");
-      String background = "F:/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
+      outputVideo.save("C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png");
+      String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
       savedBackground = loadImage(background);
     }
   }

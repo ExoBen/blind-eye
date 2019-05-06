@@ -1,7 +1,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.toby.blindeye</groupId>
-  <artifactId>blindeye</artifactId>
+  <artifactId>blind-eye</artifactId>
   <version>1</version>
   <build>
     <plugins>
