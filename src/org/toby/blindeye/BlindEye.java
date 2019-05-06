@@ -30,6 +30,7 @@ public class BlindEye extends PApplet {
   private long timeSinceLastSeen;
 
   private PImage savedBackground;
+  private PImage body;
   private Random rand;
   private PImage outputVideo;
   private SoundFile softFuzz;
@@ -68,8 +69,7 @@ public class BlindEye extends PApplet {
     background(0);
     noTint();
     long currentTime = System.currentTimeMillis() - timeBegin;
-    PImage cropBody = kinect.getBodyTrackImage().get(39, 32, KINECT_WIDTH, KINECT_HEIGHT);
-    PImage body = Upscaler.upscaler(cropBody, KINECT_WIDTH*KINECT_HEIGHT);
+    body = Upscaler.upscaler(kinect.getBodyTrackImage().get(39, 32, KINECT_WIDTH, KINECT_HEIGHT), KINECT_WIDTH*KINECT_HEIGHT);
     body.filter(THRESHOLD);
     PImage liveVideo = kinect.getColorImage().get(LEFT_OFFSET, 0, MAIN_WIDTH, MAIN_HEIGHT);
     liveVideo.filter(GRAY);
@@ -81,7 +81,7 @@ public class BlindEye extends PApplet {
     long timeSinceLastFeature = System.currentTimeMillis() - timeOfLastFeature;
     boolean toFeature = (timeSinceLastFeature > 18000 && rand.nextInt(250) == 0) || timeSinceLastFeature > 25000;
 
-    if (timeSinceLastSeen > 5000 || loading) {
+    if (timeSinceLastSeen > TIME_BEFORE_FADE + TIME_FADING || loading) {
       stopFuzz();
       image(new PImage(MAIN_WIDTH, MAIN_HEIGHT), LEFT_DISPLAY_OFFSET, 0);
       if (loading) {
@@ -111,8 +111,8 @@ public class BlindEye extends PApplet {
         //basing
         outputVideo = base.executeBase(liveVideo, body, savedBackground, kinect);
       }
-      if (timeSinceLastSeen > 4500) {
-        float op = floor(254-(((timeSinceLastSeen - 4500f)/500f)*255f));
+      if (timeSinceLastSeen > TIME_BEFORE_FADE) {
+        float op = floor(254-(((timeSinceLastSeen - TIME_BEFORE_FADE)/TIME_FADING)*255f));
         tint(128, op);
       }
       image(outputVideo, LEFT_DISPLAY_OFFSET, 0);

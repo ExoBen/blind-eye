@@ -19,6 +19,9 @@ public class UtilitiesAndConstants {
   public static final int KINECT_WIDTH = 434;
   public static final int KINECT_HEIGHT = 360;
 
+  public static final float TIME_BEFORE_FADE = 7500f;
+  public static final float TIME_FADING = 500f;
+
   public UtilitiesAndConstants() {}
 
   public static PImage twoTone(PImage body, int foreground, int background) {
