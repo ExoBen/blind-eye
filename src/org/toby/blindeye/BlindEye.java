@@ -1,11 +1,12 @@
 package org.toby.blindeye;
 
-import org.toby.blindeye.base.BaseLoader;
-import org.toby.blindeye.features.FeatureLoader;
-import org.toby.blindeye.bugs.BugLoader;
-import processing.core.*;
-import processing.sound.*;
 import KinectPV2.*;
+import org.toby.blindeye.base.BaseLoader;
+import org.toby.blindeye.bugs.BugLoader;
+import org.toby.blindeye.features.FeatureLoader;
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.sound.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,8 +48,8 @@ public class BlindEye extends PApplet {
   }
 
   public void setup() {
-    String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
-    String vhsFont = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/vcr.ttf";
+    String background = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/bg.png";
+    String vhsFont = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/vcr.ttf";
 
     savedBackground = loadImage(background);
     savedBackground.resize(MAIN_WIDTH, MAIN_HEIGHT);
@@ -123,7 +124,7 @@ public class BlindEye extends PApplet {
   // ---------------------------------------------------------------------
 
   private void setUpSounds() {
-    String softFuzzSound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/audio/vhs.wav";
+    String softFuzzSound = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/audio/vhs.wav";
     softFuzz = new SoundFile(this, softFuzzSound);
     softFuzz.loop();
     softFuzz.amp(0.2f); //volume
@@ -187,8 +188,8 @@ public class BlindEye extends PApplet {
 
   public void keyPressed() {
     if (key == 32) {
-      outputVideo.save("C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png");
-      String background = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/bg.png";
+      outputVideo.save("F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/bg.png");
+      String background = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/bg.png";
       savedBackground = loadImage(background);
     }
   }

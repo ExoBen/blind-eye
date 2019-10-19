@@ -21,10 +21,10 @@ public class BugSounds implements SoundsInterface {
   }
 
   private void loadSounds() {
-    String bug1Sound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/audio/bug1.wav";
+    String bug1Sound = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/audio/bug1.wav";
     SoundFile bug1 = new SoundFile(parent, bug1Sound);
     bug1.amp(0.5f);
-    String bug2Sound = "C:/Users/toby5/OneDrive - University of Dundee/Year 4/blind-eye/resources/audio/bug2.wav";
+    String bug2Sound = "F:/SkyDrive/Work/Uni Work/Year 4/blind-eye/resources/audio/bug2.wav";
     SoundFile bug2 = new SoundFile(parent, bug2Sound);
     bug2.amp(0.5f);
 
